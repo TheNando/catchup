@@ -34,5 +34,10 @@
     "preact-render-to-string": "^4.1.0",
     "preact-router": "^2.5.5",
     "preact-material-components": "^1.4.3"
+  },
+  "prettier": {
+    "semi": false,
+    "singleQuote": true,
+    "trailingComma": "es5"
   }
 }

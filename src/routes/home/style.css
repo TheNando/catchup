@@ -1,13 +1,30 @@
-.home {
-	padding: 20px;
-	min-height: 100%;
-	width: 100%;
+.actions {
+  display: flex;
+  justify-content: space-evenly;
+  width: 200px;
 }
 
-.cardHeader {
-  padding: 16px;
+.content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100%;
+  width: 100%;
 }
 
-.cardBody {
-  padding: 16px;
+.large {
+  font-size: 2.5rem;
+  font-weight: 100;
+  margin: -7.5px;
+}
+
+.select {
+  margin-bottom: 1.5rem;
+  min-width: 160px;
+}
+
+.timer {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
 }

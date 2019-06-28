@@ -1,97 +1,47 @@
-import { h, Component } from 'preact';
-import { route } from 'preact-router';
-import TopAppBar from 'preact-material-components/TopAppBar';
-import Drawer from 'preact-material-components/Drawer';
-import List from 'preact-material-components/List';
-import Dialog from 'preact-material-components/Dialog';
-import Switch from 'preact-material-components/Switch';
-import 'preact-material-components/Switch/style.css';
-import 'preact-material-components/Dialog/style.css';
-import 'preact-material-components/Drawer/style.css';
-import 'preact-material-components/List/style.css';
-import 'preact-material-components/TopAppBar/style.css';
-// import style from './style';
+import { h, Component } from 'preact'
+import Nav from '../nav'
+import Settings from '../settings'
+import TopAppBar from 'preact-material-components/TopAppBar'
+import 'preact-material-components/TopAppBar/style.css'
+import css from './style.css'
 
 export default class Header extends Component {
-	closeDrawer() {
-		this.drawer.MDComponent.open = false;
-		this.state = {
-			darkThemeEnabled: false
-		};
-	}
+  navRef = nav => (this.nav = nav.drawer.MDComponent)
+  openNav = () => (this.nav.open = true)
 
-	openDrawer = () => (this.drawer.MDComponent.open = true);
+  settingsRef = settings => (this.settings = settings.dialog.MDComponent)
+  openSettings = () => this.settings.show()
 
-	openSettings = () => this.dialog.MDComponent.show();
+  render(props) {
+    return (
+      <div>
+        {/* Top App Bar */}
+        <TopAppBar>
+          <TopAppBar.Row>
+            <TopAppBar.Section align-start>
+              <TopAppBar.Icon menu onClick={this.openNav}>
+                menu
+              </TopAppBar.Icon>
+              <TopAppBar.Title>
+                <span>CatchUp!</span>
+                &nbsp;
+                <span class={css.subtitle}>A Pomodoro Time Tracker</span>
+              </TopAppBar.Title>
+            </TopAppBar.Section>
+            <TopAppBar.Section
+              align-end
+              shrink-to-fit
+              onClick={this.openSettings}
+            >
+              <TopAppBar.Icon>settings</TopAppBar.Icon>
+            </TopAppBar.Section>
+          </TopAppBar.Row>
+        </TopAppBar>
 
-	drawerRef = drawer => (this.drawer = drawer);
-	dialogRef = dialog => (this.dialog = dialog);
+        <Nav ref={this.navRef} route={props.selectedRoute} />
 
-	linkTo = path => () => {
-		route(path);
-		this.closeDrawer();
-	};
-
-	goHome = this.linkTo('/');
-	goToMyProfile = this.linkTo('/profile');
-
-	toggleDarkTheme = () => {
-		this.setState(
-			{
-				darkThemeEnabled: !this.state.darkThemeEnabled
-			},
-			() => {
-				if (this.state.darkThemeEnabled) {
-					document.body.classList.add('mdc-theme--dark');
-				}
-				else {
-					document.body.classList.remove('mdc-theme--dark');
-				}
-			}
-		);
-	}
-
-	render(props) {
-		console.log(props.selectedRoute);
-		return (
-			<div>
-				<TopAppBar className="topappbar">
-					<TopAppBar.Row>
-						<TopAppBar.Section align-start>
-							<TopAppBar.Icon menu onClick={this.openDrawer}>
-								menu
-							</TopAppBar.Icon>
-							<TopAppBar.Title>Preact app</TopAppBar.Title>
-						</TopAppBar.Section>
-						<TopAppBar.Section align-end shrink-to-fit onClick={this.openSettings}>
-							<TopAppBar.Icon>settings</TopAppBar.Icon>
-						</TopAppBar.Section>
-					</TopAppBar.Row>
-				</TopAppBar>
-				<Drawer modal ref={this.drawerRef}>
-					<Drawer.DrawerContent>
-						<Drawer.DrawerItem selected={props.selectedRoute === '/'} onClick={this.goHome}>
-							<List.ItemGraphic>home</List.ItemGraphic>
-							Home
-						</Drawer.DrawerItem>
-						<Drawer.DrawerItem selected={props.selectedRoute === '/profile'} onClick={this.goToMyProfile}>
-							<List.ItemGraphic>account_circle</List.ItemGraphic>
-							Profile
-						</Drawer.DrawerItem>
-					</Drawer.DrawerContent>
-				</Drawer>
-				<Dialog ref={this.dialogRef}>
-					<Dialog.Header>Settings</Dialog.Header>
-					<Dialog.Body>
-						<div>
-							Enable dark theme <Switch onClick={this.toggleDarkTheme} />
-						</div>
-					</Dialog.Body>
-					<Dialog.Footer>
-						<Dialog.FooterButton accept>OK</Dialog.FooterButton>
-					</Dialog.Footer>
-				</Dialog>
-			</div>
-		);
-	}
+        <Settings ref={this.settingsRef} />
+      </div>
+    )
+  }
 }
