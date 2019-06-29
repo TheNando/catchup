@@ -54,7 +54,13 @@ body {
 }
 
 #app .page {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 100%;
   padding-top: 56px;
+  width: 100%;
 }
 
 /* Material Design Overrides */

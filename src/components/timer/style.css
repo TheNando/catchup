@@ -1,0 +1,28 @@
+.actions {
+  display: flex;
+  justify-content: space-evenly;
+  width: 200px;
+}
+
+.content {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.large {
+  font-size: 2.5rem;
+  font-weight: 100;
+  margin: -7.5px;
+}
+
+.select {
+  margin-bottom: 1.5rem;
+  min-width: 160px;
+}
+
+.timer {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+}

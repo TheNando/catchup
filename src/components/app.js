@@ -3,8 +3,8 @@ import { Router } from 'preact-router'
 
 import Header from './header'
 import Redirect from './redirect'
-import Home from 'async!../routes/home'
-import Profile from 'async!../routes/profile'
+import Home from '../routes/home'
+import Profile from '../routes/profile'
 
 export default class App extends Component {
   /** Gets fired when the route changes.

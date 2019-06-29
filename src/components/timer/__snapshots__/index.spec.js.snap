@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`renders the home component 1`] = `
+<div class="content">
+  <div class="timer">45:00</div>
+  <select
+    class="select"
+    hintText="Project"
+    outlined={true}
+    box={false}
+    onChange={[Function onChange]}
+  >
+    <option>opt1</option>
+    <option>opt2</option>
+    <option>opt3</option>
+    <option>opt4</option>
+  </select>
+  <div class="actions">
+    <button>
+      <i class="large">highlight_off</i>
+    </button>
+    <button>
+      <i class="large">play_circle_outline</i>
+      <i
+        on={true}
+        class="large"
+      >
+        pause_circle_outline
+      </i>
+    </button>
+    <button>
+      <i class="large">check_circle_outline</i>
+    </button>
+  </div>
+</div>
+`;
