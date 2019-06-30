@@ -1,5 +1,44 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`ConnectedTimer receives projects from provider 1`] = `
+<div class="content">
+  <div
+    id="remaining"
+    class="timer"
+  >
+    25:00
+  </div>
+  <select
+    class="select"
+    hintText="Project"
+    outlined={true}
+    box={false}
+    selectedIndex={1}
+    onChange={[Function anonymous]}
+  >
+    <option>1</option>
+    <option>2</option>
+  </select>
+  <div class="actions">
+    <button>
+      <i class="icon-button-large">highlight_off</i>
+    </button>
+    <button>
+      <i class="icon-button-large">play_circle_outline</i>
+      <i
+        on={true}
+        class="icon-button-large"
+      >
+        pause_circle_outline
+      </i>
+    </button>
+    <button>
+      <i class="icon-button-large">check_circle_outline</i>
+    </button>
+  </div>
+</div>
+`;
+
 exports[`Timer renders the component with a default start 1`] = `
 <div class="content">
   <div
@@ -13,28 +52,27 @@ exports[`Timer renders the component with a default start 1`] = `
     hintText="Project"
     outlined={true}
     box={false}
-    onChange={[Function onChange]}
+    selectedIndex={1}
+    onChange={[Function anonymous]}
   >
-    <option>opt1</option>
-    <option>opt2</option>
-    <option>opt3</option>
-    <option>opt4</option>
+    <option>1</option>
+    <option>2</option>
   </select>
   <div class="actions">
     <button>
-      <i class="large">highlight_off</i>
+      <i class="icon-button-large">highlight_off</i>
     </button>
     <button>
-      <i class="large">play_circle_outline</i>
+      <i class="icon-button-large">play_circle_outline</i>
       <i
         on={true}
-        class="large"
+        class="icon-button-large"
       >
         pause_circle_outline
       </i>
     </button>
     <button>
-      <i class="large">check_circle_outline</i>
+      <i class="icon-button-large">check_circle_outline</i>
     </button>
   </div>
 </div>

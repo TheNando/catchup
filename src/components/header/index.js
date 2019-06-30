@@ -1,18 +1,19 @@
 import { h, Component } from 'preact'
+import { connect } from 'preact-redux'
+
 import Nav from '../nav'
 import Settings from '../settings'
+
 import TopAppBar from 'preact-material-components/TopAppBar'
 import 'preact-material-components/TopAppBar/style.css'
+
 import css from './style.css'
 
-export default class Header extends Component {
-  navRef = nav => (this.nav = nav.drawer.MDComponent)
+export class Header extends Component {
   openNav = () => (this.nav.open = true)
+  setNavRef = nav => (this.nav = nav.drawer.MDComponent)
 
-  settingsRef = settings => (this.settings = settings.dialog.MDComponent)
-  openSettings = () => this.settings.show()
-
-  render(props) {
+  render({ dialog, selectedRoute }) {
     return (
       <div>
         {/* Top App Bar */}
@@ -31,17 +32,18 @@ export default class Header extends Component {
             <TopAppBar.Section
               align-end
               shrink-to-fit
-              onClick={this.openSettings}
+              onClick={() => dialog.MDComponent.show()}
             >
               <TopAppBar.Icon>settings</TopAppBar.Icon>
             </TopAppBar.Section>
           </TopAppBar.Row>
         </TopAppBar>
 
-        <Nav ref={this.navRef} route={props.selectedRoute} />
-
-        <Settings ref={this.settingsRef} />
+        <Nav ref={this.setNavRef} route={selectedRoute} />
+        <Settings />
       </div>
     )
   }
 }
+
+export default connect(state => state)(Header)

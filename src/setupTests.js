@@ -1,5 +1,15 @@
 import { h } from 'preact'
 
+// Browser mocks
+Object.defineProperty(window, 'localStorage', {
+  value: {
+    getItem: jest.fn(),
+    setItem: jest.fn(),
+    removeItem: jest.fn(),
+    clear: jest.fn(),
+  },
+})
+
 jest.mock('preact-material-components/Icon', () =>
   jest.fn().mockImplementation(props => <i {...props} />)
 )

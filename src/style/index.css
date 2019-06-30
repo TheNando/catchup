@@ -1,6 +1,7 @@
 :root {
   --background: #333;
   --text: #eee;
+  --medium-text: #666;
   --dark-text: #333;
   --light-text: #ccc;
   --mdc-theme-primary: #e91e63;
@@ -63,11 +64,46 @@ body {
   width: 100%;
 }
 
-/* Material Design Overrides */
-.mdc-dialog {
-  background: transparent;
-  border: none;
+.control-row {
+  display: flex;
+  align-items: center;
 }
+
+.control-row > *:not(:first-child) {
+  margin-left: 20px;
+}
+
+.icon-button {
+  color: var(--mdc-theme-primary);
+}
+
+.icon-button,
+.icon-button-default {
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.icon-button-large {
+  font-size: 2.5rem;
+  margin: -7.5px;
+}
+
+.layout-row-halved {
+  display: flex;
+  align-items: center;
+}
+
+.layout-row-halved > div {
+  flex-grow: 1;
+  width: 50%;
+}
+
+.layout-row-halved > div + div {
+  border-left: solid 1px #666;
+  padding-left: 20px;
+}
+
+/* Material Design Overrides */
 .mdc-floating-label {
   color: var(--light-text) !important;
 }
@@ -75,5 +111,19 @@ body {
   color: var(--light-text) !important;
 }
 .mdc-select__native-control > option {
+  color: var(--dark-text) !important;
+}
+.mdc-dialog {
+  background: transparent;
+  border: none;
+}
+
+dialog .mdc-floating-label {
+  color: var(--medium-text) !important;
+}
+dialog .mdc-select:not(.mdc-select--disabled) .mdc-select__native-control {
+  color: var(--medium-text) !important;
+}
+dialog .mdc-select__native-control > option {
   color: var(--dark-text) !important;
 }

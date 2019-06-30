@@ -11,12 +11,6 @@
   justify-content: center;
 }
 
-.large {
-  font-size: 2.5rem;
-  font-weight: 100;
-  margin: -7.5px;
-}
-
 .select {
   margin-bottom: 1.5rem;
   min-width: 160px;
