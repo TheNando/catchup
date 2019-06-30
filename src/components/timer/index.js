@@ -9,13 +9,26 @@ import IconButton from 'preact-material-components/IconButton'
 import Icon from 'preact-material-components/Icon'
 import 'preact-material-components/IconButton/style.css'
 
+import { parseTime, secondsToString } from '../../utils/time'
+
 import css from './style.css'
 
 export default class Timer extends Component {
-  render() {
+  constructor(props) {
+    super(props)
+    this.state = { active: false, remaining: 0 }
+  }
+
+  componentDidMount() {
+    this.setState({ remaining: parseTime(this.props.start) })
+  }
+
+  render(props, state) {
     return (
       <div class={css.content}>
-        <div class={css.timer}>45:00</div>
+        <div id="remaining" class={css.timer}>
+          {secondsToString(state.remaining)}
+        </div>
 
         <Select
           class={css.select}
@@ -51,3 +64,5 @@ export default class Timer extends Component {
     )
   }
 }
+
+Timer.defaultProps = { start: '25:00' }

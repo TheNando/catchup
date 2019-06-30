@@ -1,8 +1,13 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`renders the home component 1`] = `
+exports[`Timer renders the component with a default start 1`] = `
 <div class="content">
-  <div class="timer">45:00</div>
+  <div
+    id="remaining"
+    class="timer"
+  >
+    25:00
+  </div>
   <select
     class="select"
     hintText="Project"

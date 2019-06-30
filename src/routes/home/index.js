@@ -4,6 +4,6 @@ import Timer from '../../components/timer'
 
 export default () => (
   <div class="page">
-    <Timer />
+    <Timer start="25:00" />
   </div>
 )
