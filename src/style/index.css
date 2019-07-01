@@ -103,6 +103,10 @@ body {
   padding-left: 20px;
 }
 
+.pointer {
+  cursor: pointer;
+}
+
 /* Material Design Overrides */
 .mdc-floating-label {
   color: var(--light-text) !important;

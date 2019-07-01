@@ -11,7 +11,7 @@ import Icon from 'preact-material-components/Icon'
 import 'preact-material-components/IconButton/style.css'
 
 import { secondsToString, Timer } from '../../utils/time'
-import { cachePomodoro } from '../../store'
+import { cachePomodoro, completePomodoro, setProject } from '../../store'
 
 import css from './style.css'
 
@@ -21,13 +21,14 @@ export class Clock extends Component {
   constructor(props) {
     super(props)
     const {
-      pomodoro: { cycle, duration, project, remaining },
+      pomodoro: { duration, project, remaining },
       cachePomodoro,
+      completePomodoro,
       projects = [],
     } = this.props
 
     this.state = {
-      active: false,
+      isActive: false,
       projectIndex:
         // Select input has an empty item so projectIndex is off by one
         // Math.max ensures that at Default is selected
@@ -35,12 +36,34 @@ export class Clock extends Component {
       remaining,
     }
 
-    const pause = remaining => {
-      cachePomodoro({ cycle, duration, project, remaining })
-      this.setState({ active: !this.state.active })
+    const makePomodoro = () => {
+      const { ...pomodoro } = this.props.pomodoro
+      const { remaining } = this.state
+      return { ...pomodoro, remaining }
     }
 
-    this.timer = this.createTimer(duration, remaining, this.checkTime, pause)
+    const start = () => {
+      this.timer = new Timer(duration, {
+        elapsed: duration - remaining,
+        onTick: this.checkTime,
+        onPause: pause,
+        onDone: done,
+      })
+      this.setState()
+    }
+
+    const pause = () => {
+      cachePomodoro(makePomodoro())
+      this.setState({ isActive: false })
+    }
+
+    const done = () => {
+      completePomodoro(makePomodoro())
+      start()
+      this.setState({ isActive: false })
+    }
+
+    start()
   }
 
   /**
@@ -49,23 +72,9 @@ export class Clock extends Component {
    * @param {number} secs The number of seconds to compare with
    * @memberof Clock
    */
-  checkTime = secs =>
-    secs !== this.state.remaining && this.setState({ remaining: secs })
-
-  /**
-   * Create a Timer and cache a Pomodoro to state
-   *
-   * @memberof Clock
-   */
-  createTimer = (duration, remaining, onTick, onPause) => {
-    return new Timer(duration, {
-      autoStart: duration === remaining,
-      elapsed: duration - remaining,
-      onTick,
-      onPause,
-      // onDone: noop,
-    })
-  }
+  checkTime = (secs, isActive = true) =>
+    (secs !== this.state.remaining || !isActive) &&
+    this.setState({ remaining: secs, isActive })
 
   /**
    * Sets the selected index of the project select input
@@ -73,11 +82,14 @@ export class Clock extends Component {
    * @param {Object} event "change" event from project select input
    * @memberof Clock
    */
-  selectIndex = e => this.setState({ projectIndex: e.target.selectedIndex })
+  selectIndex = e => {
+    this.setState({ projectIndex: e.target.selectedIndex })
+    this.props.setProject(e.target.value)
+  }
 
-  render({ projects, pomodoro }, { projectIndex, remaining }) {
+  render({ projects, pomodoro }, { isActive, projectIndex, remaining }) {
     const { timer } = this
-    const showAll = timer.isActive || pomodoro.duration !== pomodoro.remaining
+    const showAll = isActive || pomodoro.duration !== pomodoro.remaining
 
     return (
       <div class={css.content}>
@@ -102,20 +114,20 @@ export class Clock extends Component {
         <div class={css.actions}>
           {/* Only slow Reset button when mid-Pomodoro */}
           {showAll && (
-            <IconButton>
+            <IconButton onClick={timer.reset}>
               <Icon class="icon-button-large">highlight_off</Icon>
             </IconButton>
           )}
 
-          <IconButton onClick={timer.isActive ? timer.pause : timer.resume}>
+          <IconButton onClick={isActive ? timer.pause : timer.resume}>
             <Icon class="icon-button-large">
-              {timer.isActive ? 'pause_circle_outline' : 'play_circle_outline'}
+              {isActive ? 'pause_circle_outline' : 'play_circle_outline'}
             </Icon>
           </IconButton>
 
           {/* Only slow Complete button when mid-Pomodoro */}
           {showAll && (
-            <IconButton>
+            <IconButton onClick={timer.complete}>
               <Icon class="icon-button-large">check_circle_outline</Icon>
             </IconButton>
           )}
@@ -127,5 +139,5 @@ export class Clock extends Component {
 
 export default connect(
   ({ pomodoro, projects }) => ({ pomodoro, projects }),
-  { cachePomodoro }
+  { cachePomodoro, completePomodoro, setProject }
 )(Clock)

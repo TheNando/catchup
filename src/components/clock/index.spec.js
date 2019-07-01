@@ -11,7 +11,13 @@ const pomodoro = {
 }
 const projects = ['1', '2']
 
-const props = { pomodoro, projects }
+const props = {
+  pomodoro,
+  projects,
+  cachePomodoro: jest.fn(),
+  completePomodoro: jest.fn(),
+  setProject: jest.fn(),
+}
 
 const store = configureMockStore()({ dialog: {}, pomodoro, projects })
 

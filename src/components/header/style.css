@@ -1,3 +1,11 @@
+.logo {
+  width: 46px;
+  height: 46px;
+  background: #fff center center no-repeat;
+  border-radius: 23px;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
 .subtitle {
   font-size: 1rem;
   font-style: italic;

@@ -1,18 +1,19 @@
 import { h, Component } from 'preact'
 import { connect } from 'preact-redux'
 
-import Nav from '../nav'
 import Settings from '../settings'
 
 import TopAppBar from 'preact-material-components/TopAppBar'
 import 'preact-material-components/TopAppBar/style.css'
 
+import logoImage from '../../assets/tomato.png'
 import css from './style.css'
 
-export class Header extends Component {
-  openNav = () => (this.nav.open = true)
-  setNavRef = nav => (this.nav = nav.drawer.MDComponent)
+const logoStyle = {
+  'background-image': `url(${logoImage})`,
+}
 
+export class Header extends Component {
   render({ dialog, selectedRoute }) {
     return (
       <div>
@@ -20,9 +21,7 @@ export class Header extends Component {
         <TopAppBar>
           <TopAppBar.Row>
             <TopAppBar.Section align-start>
-              <TopAppBar.Icon menu onClick={this.openNav}>
-                menu
-              </TopAppBar.Icon>
+              <div class={css.logo} style={logoStyle} />
               <TopAppBar.Title>
                 <span>CatchUp!</span>
                 &nbsp;
@@ -34,12 +33,11 @@ export class Header extends Component {
               shrink-to-fit
               onClick={() => dialog.MDComponent.show()}
             >
-              <TopAppBar.Icon>settings</TopAppBar.Icon>
+              <TopAppBar.Icon class="pointer">settings</TopAppBar.Icon>
             </TopAppBar.Section>
           </TopAppBar.Row>
         </TopAppBar>
 
-        <Nav ref={this.setNavRef} route={selectedRoute} />
         <Settings />
       </div>
     )

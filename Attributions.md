@@ -1,0 +1,1 @@
+Tomato icon made by [Smashicons](https://www.flaticon.com/authors/smashicons) from [Flaticon.com](https://www.flaticon.com/) and is licensed by [Creative Commons BY 3.0](http://creativecommons.org/licenses/by/3.0/")

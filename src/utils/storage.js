@@ -26,6 +26,7 @@ export default class Storage {
     localStorage.setItem(key, JSON.stringify(value))
     cache[key] = value
   }
+
   /**
    * Clear localStorage of all data
    *

@@ -2,6 +2,7 @@ import { createStore } from 'redux'
 import {
   getInitialPomodoro,
   getInitialProjects,
+  logAndResetPomodoro,
   toPomodoroState,
   toProjectsState,
 } from './utils/misc'
@@ -25,6 +26,24 @@ export function cachePomodoro(pomodoro) {
 }
 
 /**
+ * Archives the current active Pomodoro to the log
+ *
+ * @param {Object} pomodoro The Pomodoro object to cache
+ * @param {number} pomodoro.cycle The current active Pomodoro cycle
+ * @param {number} pomodoro.duration The total duration of the Pomodoro
+ * @param {string} pomodoro.project The project name for the Pomodoro
+ * @param {number} pomodoro.remaining The time till Pomodoro is completed
+ * @returns Action
+ * @memberof ActionCreators
+ */
+export function completePomodoro(pomodoro) {
+  return {
+    type: 'COMPLETE_POMODORO',
+    pomodoro,
+  }
+}
+
+/**
  * Stores a Material Design dialog to state so other components may show it
  *
  * @param {Element} dialog HTML Element of Material Dialog component
@@ -35,6 +54,20 @@ export function setDialog(dialog) {
   return {
     type: 'SET_DIALOG',
     dialog,
+  }
+}
+
+/**
+ * Sets the currently selected projects on the state
+ *
+ * @param {string} project The project name string to set
+ * @returns Action
+ * @memberof ActionCreators
+ */
+export function setProject(project) {
+  return {
+    type: 'SET_PROJECT',
+    project,
   }
 }
 
@@ -58,9 +91,19 @@ const ACTIONS = {
     pomodoro: toPomodoroState(pomodoro),
   }),
 
+  COMPLETE_POMODORO: (state, { pomodoro }) => ({
+    ...state,
+    pomodoro: logAndResetPomodoro(pomodoro),
+  }),
+
   SET_DIALOG: (state, { dialog }) => ({
     ...state,
     dialog,
+  }),
+
+  SET_PROJECT: (state, { project }) => ({
+    ...state,
+    pomodoro: { ...state.pomodoro, project },
   }),
 
   SET_PROJECTS: (state, { projects }) => ({
