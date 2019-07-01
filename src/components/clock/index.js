@@ -10,8 +10,8 @@ import IconButton from 'preact-material-components/IconButton'
 import Icon from 'preact-material-components/Icon'
 import 'preact-material-components/IconButton/style.css'
 
-import { secondsToString, Timer } from '../../utils/time'
 import { cachePomodoro, completePomodoro, setProject } from '../../store'
+import { secondsToString, Timer } from '../../utils/time'
 
 import css from './style.css'
 

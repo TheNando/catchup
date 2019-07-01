@@ -18,10 +18,16 @@ import Icon from 'preact-material-components/Icon'
 import 'preact-material-components/IconButton/style.css'
 
 import { setProjects, setDialog } from '../../store'
+import { aggregateLogsByProject, exportLogsToCsv } from '../../utils/misc'
+import { secondsToString } from '../../utils/time'
 
 const minMargin = { 'margin-top': '3px', 'margin-bottom': '3px' }
 
 export class Settings extends Component {
+  state = {
+    logs: aggregateLogsByProject(),
+  }
+
   /**
    * Adds a project to app state
    *
@@ -72,7 +78,7 @@ export class Settings extends Component {
     this.props.setDialog(dialog)
   }
 
-  render({ projects }) {
+  render({ projects }, { logs }) {
     return (
       <Dialog ref={this.setDialogRef}>
         <Dialog.Header>Settings</Dialog.Header>
@@ -108,6 +114,25 @@ export class Settings extends Component {
                   </h3>
                 </div>
               ))}
+            </div>
+          </section>
+
+          {/* Logs */}
+          <h2 headline5>Logged Pomodoros</h2>
+          <section class="layout-row-halved">
+            <div>
+              {logs.map(({ project, total, entries }) => (
+                <div>
+                  {`${project} - Total: ${secondsToString(
+                    total
+                  )}, Entries: ${entries}`}
+                </div>
+              ))}
+            </div>
+            <div class="control-row">
+              <Button ripple raised onClick={exportLogsToCsv}>
+                Export to CSV
+              </Button>
             </div>
           </section>
         </Dialog.Body>

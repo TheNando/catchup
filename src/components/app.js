@@ -7,7 +7,6 @@ import store from '../store'
 import Header from './header'
 import Redirect from './redirect'
 import Home from '../routes/home'
-import Profile from '../routes/profile'
 
 export default class App extends Component {
   /**
@@ -26,8 +25,6 @@ export default class App extends Component {
           <Header selectedRoute={this.state.currentUrl} />
           <Router onChange={this.setUrl}>
             <Home path="/" />
-            <Profile path="/profile/" user="me" />
-            <Profile path="/profile/:user" />
             <Redirect default to="/" />
           </Router>
         </div>

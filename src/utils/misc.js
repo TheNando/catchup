@@ -7,6 +7,45 @@ import {
 import Storage from './storage'
 
 /**
+ * Retrieves cached logs and aggregates by project name
+ *
+ * @memberof Misc
+ * @returns Array
+ */
+export function aggregateLogsByProject() {
+  const logs = Storage.get('log') || []
+  const grouped = logs.reduce((agg, log) => {
+    const [name, duration] = log
+    if (!agg[name]) {
+      agg[name] = { project: name, total: 0, entries: 0 }
+    }
+    agg[name].total += duration
+    agg[name].entries += 1
+    return agg
+  }, {})
+  return Object.values(grouped)
+}
+
+/**
+ * Exports all logged Pomodoros to CSV
+ *
+ * @memberof Misc
+ */
+export function exportLogsToCsv() {
+  const logs = [...(Storage.get('log') || [])]
+  logs.unshift(['project', 'seconds', 'date'])
+
+  const csv =
+    'data:text/csv;charset=utf-8,' + logs.map(row => row.join(',')).join('\n')
+
+  const data = encodeURI(csv)
+  const link = document.createElement('a')
+  link.setAttribute('href', data)
+  link.setAttribute('download', 'pomodoro_log.csv')
+  link.click()
+}
+
+/**
  * Retrieves cached projects array from localStorage
  *
  * @memberof Misc
