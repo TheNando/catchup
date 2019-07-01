@@ -57,8 +57,8 @@ export class Clock extends Component {
       this.setState({ isActive: false })
     }
 
-    const done = () => {
-      completePomodoro(makePomodoro())
+    const done = shouldLog => {
+      completePomodoro(makePomodoro(), shouldLog)
       start()
       this.setState({ isActive: false })
     }

@@ -3,6 +3,7 @@ import {
   getInitialPomodoro,
   getInitialProjects,
   logAndResetPomodoro,
+  resetPomodoro,
   toPomodoroState,
   toProjectsState,
 } from './utils/misc'
@@ -33,13 +34,15 @@ export function cachePomodoro(pomodoro) {
  * @param {number} pomodoro.duration The total duration of the Pomodoro
  * @param {string} pomodoro.project The project name for the Pomodoro
  * @param {number} pomodoro.remaining The time till Pomodoro is completed
+ * @param {boolean} shouldLog Whether the Pomodoro should be written to the log
  * @returns Action
  * @memberof ActionCreators
  */
-export function completePomodoro(pomodoro) {
+export function completePomodoro(pomodoro, shouldLog) {
   return {
     type: 'COMPLETE_POMODORO',
     pomodoro,
+    shouldLog,
   }
 }
 
@@ -91,9 +94,11 @@ const ACTIONS = {
     pomodoro: toPomodoroState(pomodoro),
   }),
 
-  COMPLETE_POMODORO: (state, { pomodoro }) => ({
+  COMPLETE_POMODORO: (state, { pomodoro, shouldLog }) => ({
     ...state,
-    pomodoro: logAndResetPomodoro(pomodoro),
+    pomodoro: shouldLog
+      ? logAndResetPomodoro(pomodoro)
+      : resetPomodoro(pomodoro),
   }),
 
   SET_DIALOG: (state, { dialog }) => ({

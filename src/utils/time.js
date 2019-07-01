@@ -31,12 +31,12 @@ export class Timer {
     this.onPause = onPause
     this.onDone = onDone
 
-    this.onTick(this.duration)
+    this.onTick(this.remaining / 1000, false)
   }
 
   complete = () => {
     clearInterval(this.timerId)
-    this.onDone()
+    this.onDone(true)
   }
 
   pause = () => {
@@ -49,6 +49,7 @@ export class Timer {
   reset = () => {
     clearInterval(this.timerId)
     this.onTick(this.duration, false)
+    this.onDone(false)
   }
 
   resume = () => {
@@ -66,7 +67,7 @@ export class Timer {
 
     if (now == 0) {
       clearInterval(this.timerId)
-      this.onDone()
+      this.onDone(true)
       this.isDone = true
     }
 
