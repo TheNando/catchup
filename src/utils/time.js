@@ -1,8 +1,77 @@
+import { TIMER_RESOLUTION } from './constants'
+import { noop } from './misc'
+
+/**
+ * Create a Timer
+ *
+ * @param {number}   duration
+ *                   The amount of time the Timer should run for
+ * @param {Object}   options
+ *                   Configuration for Timer
+ * @param {number}   options.elapsed
+ *                   The time offset at which to begin countdown
+ * @param {function} options.onTick
+ *                   A function to execute on every tick
+ * @param {function} options.onPause
+ *                   A function to execute when pausing the Timer
+ * @param {function} options.onDone
+ *                   A function to execute once the Timer completes
+ * @memberof Time
+ * @returns Timer
+ */
+export class Timer {
+  constructor(
+    duration,
+    { elapsed = 0, onTick = noop, onPause = noop, onDone = noop }
+  ) {
+    this.duration = duration
+    this.isDone = false
+    this.remaining = (duration - elapsed) * 1000
+    this.onTick = onTick
+    this.onPause = onPause
+    this.onDone = onDone
+  }
+
+  get isActive() {
+    return !!this.timerId
+  }
+
+  pause = () => {
+    this.remaining = this.step()
+    this.onPause(Math.floor(this.remaining / 1000))
+    clearInterval(this.timerId)
+    this.timerId = null
+  }
+
+  resume = () => {
+    if (this.isDone) return
+
+    this.start = Date.now()
+    this.timerId = setInterval(this.step, TIMER_RESOLUTION)
+  }
+
+  step = () => {
+    const now = Math.max(0, this.remaining - (Date.now() - this.start))
+    const secs = Math.floor(now / 1000)
+
+    this.onTick(secs)
+
+    if (now == 0) {
+      clearInterval(this)
+      this.isDone = true
+      onDone(duration)
+    }
+
+    return now
+  }
+}
+
 /**
  * Convert mm:ss time string into total seconds number
  *
- * @param {string} time
- * @memberof Timer
+ * @param {string} time The time string to convert
+ * @memberof Time
+ * @returns number
  */
 export function parseTime(time) {
   const [mins = 0, secs = 0] = time.split(':').map(Number)
@@ -25,8 +94,9 @@ export function parseTime(time) {
 /**
  * Convert number of secs into time string for display
  *
- * @param {number} secs
- * @memberof Timer
+ * @param {number} secs The number of seconds to convert
+ * @memberof Time
+ * @returns string
  */
 export function secondsToString(secs) {
   return `${Math.floor(secs / 60)}:${toPadded(secs % 60)}`
@@ -35,8 +105,9 @@ export function secondsToString(secs) {
 /**
  * Returns num as a 2-place zero-padded string
  *
- * @param {number} time
- * @memberof Timer
+ * @param {number} time The number to pad as a string
+ * @memberof Time
+ * @returns string
  */
 
 export function toPadded(num) {

@@ -2,6 +2,6 @@
 
 exports[`Home renders the component 1`] = `
 <div class="page">
-  <Connect(Timer) start="25:00"></Connect(Timer)>
+  <Connect(Clock)></Connect(Clock)>
 </div>
 `;

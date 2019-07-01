@@ -10,15 +10,14 @@ import Home from '../routes/home'
 import Profile from '../routes/profile'
 
 export default class App extends Component {
-  /** Fired when the route changes.
-   *	@param {Object} event		"change" event from [preact-router](http://git.io/preact-router)
-   *	@param {string} event.url	The newly routed URL
+  /**
+   * Sets the current Url
+   *
+   * @param {Object} event "change" event from [preact-router](http://git.io/preact-router)
+   * @param {string} event.url	The newly routed URL
+   * @memberof App
    */
-  setUrl = e => {
-    this.setState({
-      currentUrl: e.url,
-    })
-  }
+  setUrl = e => this.setState({ currentUrl: e.url })
 
   render() {
     return (

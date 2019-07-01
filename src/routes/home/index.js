@@ -1,9 +1,9 @@
 import { h, Component } from 'preact'
 
-import Timer from '../../components/timer'
+import Clock from '../../components/clock'
 
 export default () => (
   <div class="page">
-    <Timer start="25:00" />
+    <Clock />
   </div>
 )

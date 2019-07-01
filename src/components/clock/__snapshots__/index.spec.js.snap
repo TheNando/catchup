@@ -1,0 +1,29 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`ConnectedClock receives projects from provider 1`] = `
+<div class="content">
+  <div
+    id="remaining"
+    class="timer"
+  >
+    20:34
+  </div>
+  <select
+    class="select"
+    disabled={false}
+    hintText="Project"
+    outlined={true}
+    box={false}
+    selectedIndex={1}
+    onChange={[Function anonymous]}
+  >
+    <option>1</option>
+    <option>2</option>
+  </select>
+  <div class="actions">
+    <button onClick={[Function anonymous]}>
+      <i class="icon-button-large">play_circle_outline</i>
+    </button>
+  </div>
+</div>
+`;

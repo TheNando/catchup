@@ -23,8 +23,10 @@ const minMargin = { 'margin-top': '3px', 'margin-bottom': '3px' }
 
 export class Settings extends Component {
   /**
-   * Add a project to app state
+   * Adds a project to app state
    *
+   * @param {Object} event "keypress" or "click" event
+   * @param {string} event.key The key which was pressed
    * @memberof Settings
    */
   addProject = event => {
@@ -35,6 +37,7 @@ export class Settings extends Component {
 
     let projects = this.props.projects
 
+    // Do not add project name if it already exists (case insensitive)
     if (
       projects.map(items => items.toLowerCase()).includes(name.toLowerCase())
     ) {
@@ -42,15 +45,15 @@ export class Settings extends Component {
       return
     }
 
-    projects = [...projects, name]
-    this.props.setProjects(projects)
+    this.props.setProjects([...projects, name])
 
     nameInput.value = ''
   }
 
   /**
-   * Remove a project from app state
+   * Removes a project from app state
    *
+   * @param {string} name The new project's name
    * @memberof Settings
    */
   deleteProject = name => {
@@ -59,8 +62,9 @@ export class Settings extends Component {
   }
 
   /**
-   * Set dialog on app state so Header config button can open it
+   * Sets dialog on app state so Header config button can open it
    *
+   * @param {Element} dialog HTML Element of Material Dialog component
    * @memberof Settings
    */
   setDialogRef = dialog => {
