@@ -129,7 +129,7 @@ export const reducer = (state = INITIAL, action) =>
 export default createStore(
   reducer,
   undefined,
-  window.__REDUX_DEVTOOLS_EXTENSION__
+  typeof window !== 'undefined' && window.__REDUX_DEVTOOLS_EXTENSION__
     ? window.__REDUX_DEVTOOLS_EXTENSION__()
     : undefined
 )

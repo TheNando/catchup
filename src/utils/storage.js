@@ -9,9 +9,12 @@ export default class Storage {
    * @returns any
    */
   static get(key) {
+    if (typeof window === 'undefined') return
+
     if (!cache.hasOwnProperty(key)) {
       cache[key] = JSON.parse(localStorage.getItem(key) || null)
     }
+
     return cache[key]
   }
 
@@ -23,6 +26,8 @@ export default class Storage {
    * @memberof Storage
    */
   static set(key, value) {
+    if (typeof window === 'undefined') return
+
     localStorage.setItem(key, JSON.stringify(value))
     cache[key] = value
   }
