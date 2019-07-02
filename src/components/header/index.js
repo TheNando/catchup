@@ -6,7 +6,7 @@ import Settings from '../settings'
 import TopAppBar from 'preact-material-components/TopAppBar'
 import 'preact-material-components/TopAppBar/style.css'
 
-import logoImage from '../../assets/tomato.png'
+import logoImage from '../../assets/logo.png'
 import css from './style.css'
 
 const logoStyle = {
