@@ -82,6 +82,13 @@ export class Clock extends Component {
     }
 
     const startBreak = () => {
+      if ((Notification || {}).permission === 'granted') {
+        new Notification('You completed a session!', {
+          body: 'Time for a break!',
+          icon: '/assets/logo.png',
+        })
+      }
+
       const breakType = this.props.pomodoro.cycle === 4 ? 'long' : 'short'
 
       const breakTime =
