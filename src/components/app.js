@@ -1,11 +1,9 @@
 import { h, Component } from 'preact'
-import { Router } from 'preact-router'
 
 import { Provider } from 'preact-redux'
 import store from '../store'
 
 import Header from './header'
-import Redirect from './redirect'
 import Home from '../routes/home'
 
 export default class App extends Component {
@@ -22,11 +20,8 @@ export default class App extends Component {
     return (
       <Provider store={store}>
         <div id="app">
-          <Header selectedRoute={this.state.currentUrl} />
-          <Router onChange={this.setUrl}>
-            <Home path="/" />
-            <Redirect default to="/" />
-          </Router>
+          <Header />
+          <Home />
         </div>
       </Provider>
     )
