@@ -10,6 +10,11 @@ import IconButton from 'preact-material-components/IconButton'
 import Icon from 'preact-material-components/Icon'
 import 'preact-material-components/IconButton/style.css'
 
+import {
+  DEFAULT_LONG_BREAK,
+  DEFAULT_SHORT_BREAK,
+  MAX_CYCLES,
+} from '../../utils/constants'
 import { cachePomodoro, completePomodoro, setProject } from '../../store'
 import { secondsToString, Timer } from '../../utils/time'
 
@@ -20,6 +25,30 @@ export class Clock extends Component {
 
   constructor(props) {
     super(props)
+    this.configureTimer()
+  }
+
+  /**
+   * Compares the number of seconds to remaining and updates if differing
+   *
+   * @param {number} secs The number of seconds to compare with
+   * @memberof Clock
+   */
+  checkTime = (secs, isActive = true) => {
+    isActive &&
+      !this.state.isBreak &&
+      this.props.cachePomodoro(this.makePomodoro())
+    if (secs !== this.state.remaining || !isActive) {
+      this.setState({ remaining: secs, isActive })
+    }
+  }
+
+  /**
+   * Initialize timer logic
+   *
+   * @memberof Clock
+   */
+  configureTimer() {
     const {
       pomodoro: { duration, project, remaining },
       cachePomodoro,
@@ -29,7 +58,9 @@ export class Clock extends Component {
 
     this.state = {
       isActive: false,
-      isResuming: duration != remaining,
+      isBreak: false,
+      breakType: '',
+      isResuming: duration !== remaining,
       projectIndex:
         // Select input has an empty item so projectIndex is off by one
         // Math.max ensures that at Default is selected
@@ -37,13 +68,9 @@ export class Clock extends Component {
       remaining,
     }
 
-    const makePomodoro = () => {
-      const { ...pomodoro } = this.props.pomodoro
-      const { remaining } = this.state
-      return { ...pomodoro, remaining }
-    }
-
     const start = () => {
+      const isResuming = this.state.isResuming
+
       this.timer = new Timer(duration, {
         elapsed: duration - remaining,
         onTick: this.checkTime,
@@ -51,19 +78,45 @@ export class Clock extends Component {
         onResume: resume,
         onDone: done,
       })
-      this.setState()
+
+      this.setState({ isActive: false, isBreak: false, isResuming })
+    }
+
+    const startBreak = () => {
+      const breakType = this.props.pomodoro.cycle === 4 ? 'long' : 'short'
+
+      const breakTime =
+        breakType === 'short' ? DEFAULT_SHORT_BREAK : DEFAULT_LONG_BREAK
+
+      this.timer = new Timer(breakTime, {
+        onTick: this.checkTime,
+        onDone: start,
+      })
+      this.timer.resume()
+
+      this.setState({
+        breakType,
+        isActive: false,
+        isBreak: true,
+        isResuming: false,
+      })
     }
 
     const pause = () => {
-      cachePomodoro(makePomodoro())
+      cachePomodoro(this.makePomodoro())
       this.setState({ isActive: false, isResuming: false })
     }
 
     const resume = () => this.setState({ isResuming: false })
 
     const done = shouldLog => {
-      completePomodoro(makePomodoro(), shouldLog)
-      start()
+      completePomodoro(this.makePomodoro(), shouldLog)
+      if (shouldLog) {
+        startBreak()
+      } else {
+        start()
+      }
+
       this.setState({ isActive: false, isResuming: false })
     }
 
@@ -71,14 +124,16 @@ export class Clock extends Component {
   }
 
   /**
-   * Compares the number of seconds to remaining and updates if differing
+   * Construct a cacheable pomodoro with the current state and time remaining
    *
-   * @param {number} secs The number of seconds to compare with
    * @memberof Clock
+   * @returns Object
    */
-  checkTime = (secs, isActive = true) =>
-    (secs !== this.state.remaining || !isActive) &&
-    this.setState({ remaining: secs, isActive })
+  makePomodoro = () => {
+    const { ...pomodoro } = this.props.pomodoro
+    const { remaining } = this.state
+    return { ...pomodoro, remaining }
+  }
 
   /**
    * Sets the selected index of the project select input
@@ -93,11 +148,31 @@ export class Clock extends Component {
 
   render(
     { projects, pomodoro },
-    { isActive, isResuming, projectIndex, remaining }
+    { breakType, isActive, isBreak, isResuming, projectIndex, remaining }
   ) {
     const { timer } = this
     const showAll = isActive || pomodoro.duration !== pomodoro.remaining
 
+    // Break content
+    if (isBreak) {
+      return (
+        <div class={css.content}>
+          <span class={css.resuming}>Time for a {breakType} break!</span>
+          <div id="remaining" class={css.timer}>
+            {secondsToString(remaining)}
+          </div>
+
+          <div class={css.actionBlock}>
+            <IconButton onClick={timer.complete}>
+              <Icon class="icon-button-large">check_circle_outline</Icon>
+            </IconButton>
+            <span class={css.actionLabel}>Finish Break</span>
+          </div>
+        </div>
+      )
+    }
+
+    // Pomodoro Content
     return (
       <div class={css.content}>
         <div id="remaining" class={css.timer}>
@@ -119,6 +194,12 @@ export class Clock extends Component {
         </Select>
 
         {isResuming && <span class={css.resuming}>Resuming session</span>}
+
+        {showAll && (
+          <span class={css.cycle}>
+            Cycle {pomodoro.cycle} of {MAX_CYCLES}
+          </span>
+        )}
 
         <div class={css.actions}>
           <div class={css.actionBlock}>

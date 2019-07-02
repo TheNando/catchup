@@ -57,8 +57,8 @@ export class Timer {
 
   reset = () => {
     clearInterval(this.timerId)
-    this.onTick(DEFAULT_START, false)
     this.onDone(false)
+    this.onTick(DEFAULT_START, false)
   }
 
   resume = () => {

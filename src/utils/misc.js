@@ -131,9 +131,9 @@ export function noop() {}
  */
 export function resetPomodoro(pomodoro) {
   const resetPomodoro = {
+    ...pomodoro,
     duration: DEFAULT_START,
     remaining: DEFAULT_START,
-    ...pomodoro,
   }
 
   Storage.set('pomodoro', resetPomodoro)

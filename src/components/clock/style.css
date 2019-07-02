@@ -15,6 +15,10 @@
   margin-left: 0.75rem;
 }
 
+.cycle {
+  margin-bottom: 0.5rem;
+}
+
 .content {
   align-items: center;
   display: flex;
