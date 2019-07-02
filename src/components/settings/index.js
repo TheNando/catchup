@@ -18,16 +18,12 @@ import Icon from 'preact-material-components/Icon'
 import 'preact-material-components/IconButton/style.css'
 
 import { setProjects, setDialog } from '../../store'
-import { aggregateLogsByProject, exportLogsToCsv } from '../../utils/misc'
+import { exportLogsToCsv } from '../../utils/misc'
 import { secondsToString } from '../../utils/time'
 
 const minMargin = { 'margin-top': '3px', 'margin-bottom': '3px' }
 
 export class Settings extends Component {
-  state = {
-    logs: aggregateLogsByProject(),
-  }
-
   /**
    * Adds a project to app state
    *
@@ -78,7 +74,7 @@ export class Settings extends Component {
     this.props.setDialog(dialog)
   }
 
-  render({ projects }, { logs }) {
+  render({ logs, projects }) {
     return (
       <Dialog ref={this.setDialogRef}>
         <Dialog.Header>Settings</Dialog.Header>

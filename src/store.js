@@ -1,5 +1,6 @@
 import { createStore } from 'redux'
 import {
+  aggregateLogsByProject,
   getInitialPomodoro,
   getInitialProjects,
   logAndResetPomodoro,
@@ -99,6 +100,7 @@ const ACTIONS = {
     pomodoro: shouldLog
       ? logAndResetPomodoro(pomodoro)
       : resetPomodoro(pomodoro),
+    logs: shouldLog ? aggregateLogsByProject() : state.logs,
   }),
 
   SET_DIALOG: (state, { dialog }) => ({
@@ -119,6 +121,7 @@ const ACTIONS = {
 
 const INITIAL = {
   dialog: null,
+  logs: aggregateLogsByProject(),
   pomodoro: getInitialPomodoro(),
   projects: getInitialProjects(),
 }

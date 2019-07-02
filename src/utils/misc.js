@@ -14,6 +14,9 @@ import Storage from './storage'
  */
 export function aggregateLogsByProject() {
   const logs = Storage.get('log') || []
+
+  if (logs.length === 0) return []
+
   const grouped = logs.reduce((agg, log) => {
     const [name, duration] = log
     if (!agg[name]) {

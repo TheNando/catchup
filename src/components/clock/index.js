@@ -239,6 +239,6 @@ export class Clock extends Component {
 }
 
 export default connect(
-  ({ pomodoro, projects }) => ({ pomodoro, projects }),
+  state => state,
   { cachePomodoro, completePomodoro, setProject }
 )(Clock)
