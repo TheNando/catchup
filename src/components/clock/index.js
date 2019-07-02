@@ -29,6 +29,7 @@ export class Clock extends Component {
 
     this.state = {
       isActive: false,
+      isResuming: duration != remaining,
       projectIndex:
         // Select input has an empty item so projectIndex is off by one
         // Math.max ensures that at Default is selected
@@ -47,6 +48,7 @@ export class Clock extends Component {
         elapsed: duration - remaining,
         onTick: this.checkTime,
         onPause: pause,
+        onResume: resume,
         onDone: done,
       })
       this.setState()
@@ -54,13 +56,15 @@ export class Clock extends Component {
 
     const pause = () => {
       cachePomodoro(makePomodoro())
-      this.setState({ isActive: false })
+      this.setState({ isActive: false, isResuming: false })
     }
+
+    const resume = () => this.setState({ isResuming: false })
 
     const done = shouldLog => {
       completePomodoro(makePomodoro(), shouldLog)
       start()
-      this.setState({ isActive: false })
+      this.setState({ isActive: false, isResuming: false })
     }
 
     start()
@@ -87,7 +91,10 @@ export class Clock extends Component {
     this.props.setProject(e.target.value)
   }
 
-  render({ projects, pomodoro }, { isActive, projectIndex, remaining }) {
+  render(
+    { projects, pomodoro },
+    { isActive, isResuming, projectIndex, remaining }
+  ) {
     const { timer } = this
     const showAll = isActive || pomodoro.duration !== pomodoro.remaining
 
@@ -111,25 +118,38 @@ export class Clock extends Component {
           ))}
         </Select>
 
+        {isResuming && <span class={css.resuming}>Resuming session</span>}
+
         <div class={css.actions}>
+          <div class={css.actionBlock}>
+            <IconButton onClick={isActive ? timer.pause : timer.resume}>
+              <Icon class="icon-button-large">
+                {isActive ? 'pause_circle_outline' : 'play_circle_outline'}
+              </Icon>
+            </IconButton>
+            <span class={css.actionLabel}>
+              {isActive ? 'Pause' : showAll ? 'Resume' : 'Start'}
+            </span>
+          </div>
+
           {/* Only slow Reset button when mid-Pomodoro */}
           {showAll && (
-            <IconButton onClick={timer.reset}>
-              <Icon class="icon-button-large">highlight_off</Icon>
-            </IconButton>
+            <div class={css.actionBlock}>
+              <IconButton onClick={timer.reset}>
+                <Icon class="icon-button-large">highlight_off</Icon>
+              </IconButton>
+              <span class={css.actionLabel}>Reset</span>
+            </div>
           )}
-
-          <IconButton onClick={isActive ? timer.pause : timer.resume}>
-            <Icon class="icon-button-large">
-              {isActive ? 'pause_circle_outline' : 'play_circle_outline'}
-            </Icon>
-          </IconButton>
 
           {/* Only slow Complete button when mid-Pomodoro */}
           {showAll && (
-            <IconButton onClick={timer.complete}>
-              <Icon class="icon-button-large">check_circle_outline</Icon>
-            </IconButton>
+            <div class={css.actionBlock}>
+              <IconButton onClick={timer.complete}>
+                <Icon class="icon-button-large">check_circle_outline</Icon>
+              </IconButton>
+              <span class={css.actionLabel}>Complete</span>
+            </div>
           )}
         </div>
       </div>

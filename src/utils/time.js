@@ -1,4 +1,4 @@
-import { TIMER_RESOLUTION } from './constants'
+import { DEFAULT_START, TIMER_RESOLUTION } from './constants'
 import { noop } from './misc'
 
 /**
@@ -14,6 +14,8 @@ import { noop } from './misc'
  *                   A function to execute on every tick
  * @param {function} options.onPause
  *                   A function to execute when pausing the Timer
+ * @param {function} options.onResume
+ *                   A function to execute when resuming the Timer
  * @param {function} options.onDone
  *                   A function to execute once the Timer completes
  * @memberof Time
@@ -22,13 +24,20 @@ import { noop } from './misc'
 export class Timer {
   constructor(
     duration,
-    { elapsed = 0, onTick = noop, onPause = noop, onDone = noop }
+    {
+      elapsed = 0,
+      onTick = noop,
+      onPause = noop,
+      onResume = noop,
+      onDone = noop,
+    }
   ) {
     this.duration = duration
     this.isDone = false
     this.remaining = (duration - elapsed) * 1000
     this.onTick = onTick
     this.onPause = onPause
+    this.onResume = onResume
     this.onDone = onDone
 
     this.onTick(this.remaining / 1000, false)
@@ -48,7 +57,7 @@ export class Timer {
 
   reset = () => {
     clearInterval(this.timerId)
-    this.onTick(this.duration, false)
+    this.onTick(DEFAULT_START, false)
     this.onDone(false)
   }
 
@@ -57,6 +66,7 @@ export class Timer {
 
     this.start = Date.now()
     this.timerId = setInterval(this.step, TIMER_RESOLUTION)
+    this.onResume()
   }
 
   step = () => {
