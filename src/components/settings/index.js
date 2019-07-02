@@ -121,6 +121,12 @@ export class Settings extends Component {
           <h2 headline5>Logged Pomodoros</h2>
           <section class="layout-row-halved">
             <div>
+              {/* None logged */}
+              {logs.map.length === 0 && (
+                <span>You have no logged Pomodoros</span>
+              )}
+
+              {/* Logged Entries Info */}
               {logs.map(({ project, total, entries }) => (
                 <div>
                   {`${project} - Total: ${secondsToString(
@@ -130,7 +136,12 @@ export class Settings extends Component {
               ))}
             </div>
             <div class="control-row">
-              <Button ripple raised onClick={exportLogsToCsv}>
+              <Button
+                ripple
+                raised
+                disabled={logs.length === 0}
+                onClick={exportLogsToCsv}
+              >
                 Export to CSV
               </Button>
             </div>
