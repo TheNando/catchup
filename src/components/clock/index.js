@@ -14,6 +14,7 @@ import {
   DEFAULT_LONG_BREAK,
   DEFAULT_SHORT_BREAK,
   MAX_CYCLES,
+  DEFAULT_START,
 } from '../../utils/constants'
 import { cachePomodoro, completePomodoro, setProject } from '../../store'
 import { secondsToString, Timer } from '../../utils/time'
@@ -69,17 +70,15 @@ export class Clock extends Component {
     }
 
     const start = () => {
-      const isResuming = this.state.isResuming
-
       this.timer = new Timer(duration, {
-        elapsed: duration - remaining,
+        elapsed: this.state.isResuming ? duration - remaining : 0,
         onTick: this.checkTime,
         onPause: pause,
         onResume: resume,
         onDone: done,
       })
 
-      this.setState({ isActive: false, isBreak: false, isResuming })
+      this.setState({ isActive: false, isBreak: false })
     }
 
     const startBreak = () => {
@@ -116,8 +115,6 @@ export class Clock extends Component {
       } else {
         start()
       }
-
-      this.setState({ isActive: false, isResuming: false })
     }
 
     start()

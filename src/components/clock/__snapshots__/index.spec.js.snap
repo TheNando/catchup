@@ -21,9 +21,12 @@ exports[`ConnectedClock receives projects from provider 1`] = `
     <option>2</option>
   </select>
   <div class="actions">
-    <button onClick={[Function anonymous]}>
-      <i class="icon-button-large">play_circle_outline</i>
-    </button>
+    <div class="actionBlock">
+      <button onClick={[Function anonymous]}>
+        <i class="icon-button-large">play_circle_outline</i>
+      </button>
+      <span class="actionLabel">Start</span>
+    </div>
   </div>
 </div>
 `;
