@@ -1,7 +1,7 @@
 :root {
   --background: #333;
   --text: #eee;
-  --medium-text: #666;
+  --medium-text: #777;
   --dark-text: #333;
   --light-text: #ccc;
   --mdc-theme-primary: #e91e63;
@@ -111,6 +111,10 @@ body {
 }
 
 /* Material Design Overrides */
+.mdc-select--disabled .mdc-select__native-control {
+  color: var(--medium-text) !important;
+}
+
 .mdc-floating-label {
   color: var(--light-text) !important;
 }
