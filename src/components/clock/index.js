@@ -117,6 +117,8 @@ export class Clock extends Component {
 
     const done = shouldLog => {
       completePomodoro(this.makePomodoro(), shouldLog)
+      this.setState({ isResuming: false })
+
       if (shouldLog) {
         startBreak()
       } else {
