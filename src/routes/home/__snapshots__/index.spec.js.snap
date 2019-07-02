@@ -1,7 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`Home renders the component 1`] = `
-<div class="page">
-  <Connect(Clock)></Connect(Clock)>
-</div>
-`;
