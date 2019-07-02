@@ -122,9 +122,7 @@ export class Settings extends Component {
           <section class="layout-row-halved">
             <div>
               {/* None logged */}
-              {logs.map.length === 0 && (
-                <span>You have no logged Pomodoros</span>
-              )}
+              {logs.length === 0 && <span>You have no logged Pomodoros</span>}
 
               {/* Logged Entries Info */}
               {logs.map(({ project, total, entries }) => (
